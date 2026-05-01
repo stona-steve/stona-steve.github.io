@@ -32,7 +32,31 @@
         .sys-status {
             font-size: 12px;
             color: #888888;
+            margin-bottom: 10px;
+        }
+
+        /* Ghost Mode Toggle */
+        .ghost-toggle {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ff3333; /* Default Red */
+            cursor: pointer;
             margin-bottom: 40px;
+            user-select: none;
+            transition: color 0.3s;
+            border: 1px solid #ff3333;
+            padding: 5px 10px;
+            background: rgba(255, 51, 51, 0.05);
+        }
+
+        .ghost-toggle.active {
+            color: #00ff00; /* Hacker Green */
+            border-color: #00ff00;
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        .ghost-toggle:hover {
+            box-shadow: 0 0 10px currentColor;
         }
 
         /* The Engine */
@@ -107,19 +131,22 @@
 
     <div class="brand-header">Stona Steve Studios</div>
     <div class="sys-status" id="clock">SYSTEM ONLINE // 00:00:00</div>
+    
+    <div class="ghost-toggle" id="ghostBtn" onclick="toggleGhostMode()">[GHOST MODE: OFFLINE]</div>
 
-    <form class="search-container" action="https://www.google.com/search" method="get">
-        <input type="text" name="q" placeholder="Awaiting command..." autofocus autocomplete="off">
+    <form class="search-container" id="searchForm" action="https://www.google.com/search" method="get">
+        <input type="text" id="searchInput" name="q" placeholder="Awaiting command..." autofocus autocomplete="off">
         <button type="submit">EXECUTE</button>
     </form>
 
     <div class="quick-links">
-        <a href="stona-steve.github.io" target="_blank">[MAIN SITE]</a>
-        <a href="https://discord.com/invite/WYMBv7vV6p" target="_blank">[DISCORD]</a>
+        <a href="https://github.com" target="_blank">[GITHUB]</a>
+        <a href="https://youtube.com" target="_blank">[YOUTUBE]</a>
+        <a href="https://discord.com/app" target="_blank">[DISCORD]</a>
     </div>
 
     <script>
-        // JS Engine: Live System Clock
+        // JS Engine 1: Live System Clock
         function updateClock() {
             const now = new Date();
             const time = now.toLocaleTimeString('en-US', { hour12: false });
@@ -127,6 +154,30 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
+
+        // JS Engine 2: Ghost Mode Logic
+        let isGhostMode = false;
+        
+        function toggleGhostMode() {
+            isGhostMode = !isGhostMode;
+            const btn = document.getElementById('ghostBtn');
+            const form = document.getElementById('searchForm');
+            const input = document.getElementById('searchInput');
+
+            if (isGhostMode) {
+                // Activate Stealth: Swap to DuckDuckGo
+                btn.classList.add('active');
+                btn.innerText = "[GHOST MODE: ACTIVE]";
+                form.action = "https://duckduckgo.com/";
+                input.placeholder = "Encrypted routing engaged...";
+            } else {
+                // Deactivate Stealth: Swap back to Google
+                btn.classList.remove('active');
+                btn.innerText = "[GHOST MODE: OFFLINE]";
+                form.action = "https://www.google.com/search";
+                input.placeholder = "Awaiting command...";
+            }
+        }
     </script>
 
 </body>
